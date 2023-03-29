@@ -7,10 +7,6 @@ from main import BooksCollector
 # обязательно указывать префикс Test
 class TestBooksCollector:
 
-    @pytest.fixture
-    def collector(self):
-        return BooksCollector()
-
     # пример теста:
     # обязательно указывать префикс test_
     # дальше идет название метода, который тестируем add_new_book_
@@ -38,22 +34,26 @@ class TestBooksCollector:
     def test_set_book_rating_book_not_exist(self, collector):
         name, rating = "Спящая красавица", 10
         collector.set_book_rating(name, rating)
+
         assert collector.get_book_rating(name) is None
 
     @pytest.mark.parametrize("name, rating", [['Золушка', 6], ['Белоснежка', 8]])
     def test_set_book_rating_true(self, collector, name, rating):
         collector.add_new_book(name)
         collector.set_book_rating(name, rating)
+
         assert collector.get_book_rating(name) == rating
 
     @pytest.mark.parametrize("name, rating", [['Золушка', 0], ['Белоснежка', 11]])
     def test_set_book_rating_out_of_range(self, collector, name, rating):
         collector.add_new_book(name)
         collector.set_book_rating(name, rating)
+
         assert collector.get_book_rating(name) == 1
 
     def test_get_book_rating_book_not_exist(self, collector):
         name = "Спящая красавица"
+
         assert collector.get_book_rating(name) is None
 
     def test_get_books_with_specific_rating_true(self, collector):
@@ -61,6 +61,7 @@ class TestBooksCollector:
         for name, rating in books.items():
             collector.add_new_book(name)
             collector.set_book_rating(name, rating)
+
         assert len(collector.get_books_with_specific_rating(7)) == 1
 
     def test_add_book_in_favorites_add_one_book(self, collector):
